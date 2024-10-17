@@ -1,0 +1,20 @@
+{
+  "name": "monorepo-project",
+  "packageManager": "yarn@4.5.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "apps/backend/*"
+  ],
+  "scripts": {
+    "start:api-proxy": "yarn workspace api-proxy dev",
+    "start:auth-service": "yarn workspace auth-service dev",
+    "start:product-service": "yarn workspace products-service dev",
+    "docker:dev": "docker-compose -f ./apps/backend/docker-compose.dev.yml up -d",
+    "docker:local": "docker-compose -f ./apps/backend/docker-compose.local.yml up -d",
+    "docker:stop": "docker-compose -f ./apps/backend/docker-compose.dev.yml down"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}

@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  auth_app:
+    container_name: auth_service_app
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile.local
+    restart: always
+    ports:
+      - 4001:4001
+    env_file: ./auth-service/src/configs/.env.development
+    environment:
+      - DOCKER_ENV=true
+  products:
+    container_name: products_service_container
+    build:
+      context: ./products-service
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 4002:4002
+    env_file: ./products-service/src/configs/.env.development
+    environment:
+      - DOCKER_ENV=true

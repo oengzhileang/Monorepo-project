@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  api-proxy:
+    container_name: api_proxy_service_container
+    build:
+      context: ./api-proxy
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 4000:4000
+    env_file: ./api-proxy/src/configs/.env.development
+    environment:
+      - DOCKER_ENV=true
+      - AUTH_SERVICE_URL=http://localhost:4001/v1/auth
+
+    volumes:
+      - ./api-proxy/src:/app/src # HOT RELOADING
+  auth:
+    container_name: auth_service_container
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 4001:4001
+    env_file: ./auth-service/src/configs/.env.development
+    environment:
+      - DOCKER_ENV=true
+    volumes:
+      - ./auth-service/src:/app/src # HOT RELOADING
+  products:
+    container_name: products_service_container
+    build:
+      context: ./products-service
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 4002:4002
+    env_file: ./products-service/src/configs/.env.development
+    environment:
+      - DOCKER_ENV=true
+      - PRODUCTS_SERVICE_URL=http://localhost:4002/v1/products
+    volumes:
+      - ./products-service/src:/app/src # HOT RELOADING

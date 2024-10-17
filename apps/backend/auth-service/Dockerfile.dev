@@ -1,0 +1,29 @@
+# Use the correct Node.js 20 Alpine image tag
+FROM node:20-alpine3.19
+
+# Enable Corepack (included by default in Node.js 16.9 and higher)
+RUN corepack enable
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and yarn.lock
+COPY package.json ./
+
+# Prepare and activate Yarn 4.5.0
+RUN corepack prepare yarn@4.5.0 --activate
+
+# Install dependencies using Yarn
+RUN yarn install
+
+# Copy other necessary files
+COPY tsconfig.json ./
+COPY nodemon.json ./
+COPY src ./src
+COPY tsoa.json ./
+
+# Expose the application's port
+EXPOSE 4001
+
+# Command to run the application
+CMD ["yarn", "dev"]
